@@ -1,0 +1,118 @@
+class Library:
+    book_list = [] # class attribute to store book
+
+    # class method entry_book
+    @classmethod
+    def entry_book(cls, book):
+        Library.book_list.append(book)
+
+class Book:
+    def __init__(self, book_id, title, author, availability):
+        self.__book_id = book_id  # Private attribute
+        self.__title = title      # Private attribute
+        self.__author = author    # Private attribute
+        self.__availability = availability  # Private attribute
+
+    # Getter methods to access private attributes
+    def get_book_id(self):
+        return self.__book_id
+
+    def get_title(self):
+        return self.__title
+
+    def get_author(self):
+        return self.__author
+
+    def get_availability(self):
+        return self.__availability
+
+    # Setter method to modify private attribute availability
+    def set_availability(self, status):
+        self.__availability = status
+
+    def borrow_book(self):
+        if self.__availability:
+            self.set_availability(False)
+            print(f"The book '{self.__title}' (id: {self.__book_id}) has just been borrowed successfully.")
+            print(f'-' * 50)
+        else:
+            print(f"The book '{self.__title}' (id: {self.__book_id}) is already borrowed before.")
+            print(f'-' * 50)
+
+    def return_book(self):
+        if not self.__availability:
+            self.set_availability(True)
+            print(f"The book '{self.__title}' (id: {self.__book_id}) has just been returned successfully.")
+            print(f'-' * 50)
+        else:
+            print(f"The book '{self.__title}' (id: {self.__book_id}) is already returned before.")
+            print(f'-' * 50)
+   
+    def view_book_info(self):
+        print(f'Book ID: {self.__book_id}')
+        print(f'Title: {self.__title}')
+        print(f'Author: {self.__author}')
+        print(f"Availability: {'Available' if self.__availability else 'Not Available'}")
+        print('=' * 25)
+
+
+# Initialize Book objects
+book1 = Book(1, 'Mother', 'Maxim Gorky', True)
+book2 = Book(2, 'War and Peace', 'Leo Tolstoy', False)
+book3 = Book(3, 'Hundred Years of Solitude', 'Marquez', True)
+
+# Add books to the library
+Library.entry_book(book1)
+Library.entry_book(book2)
+Library.entry_book(book3)
+
+
+def menu():
+    while True:
+        print(f'\n---Library Menu---')
+        print(f'Press 1 to View All Books')
+        print(f'Press 2 to Borrow Book')
+        print(f'Press 3 to Return Book')
+        print(f'Press 4 to Exit\n')
+        try:
+            choice = int(input('Enter your choice from the library menu: '))
+           
+            if choice == 1:
+                # Display all books
+                [book.view_book_info() for book in Library.book_list]
+
+            elif choice == 2:
+                # Borrow a book
+                try:
+                    book_id = int(input('Enter the book ID to borrow: '))
+                    book = next((b for b in Library.book_list if b.get_book_id() == book_id), None)
+                    if book:
+                        book.borrow_book()
+                    else:
+                        print(f'Invalid Book ID.')
+                except ValueError:
+                    print('Error: Please Enter a valid number of Book Id.')
+
+            elif choice == 3:
+                # Return a book
+                try:
+                    book_id = int(input('Enter the book ID to return: '))
+                    book = next((b for b in Library.book_list if b.get_book_id() == book_id), None)
+                    if book:
+                        book.return_book()
+                    else:
+                        print(f'Invalid Book ID.')
+                except ValueError:
+                    print('Error: Please Enter a valid number of Book Id.')
+               
+            elif choice == 4:
+                break
+
+            else:
+                print(f'Error: Invalid menu choice. Please choose a number between 1 and 4.')
+       
+        except ValueError:
+            print(f'Error: Please enter a valid number for the menu choice.')
+
+# Run the menu
+menu()
