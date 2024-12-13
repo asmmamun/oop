@@ -1,0 +1,8 @@
+class Library:
+    book_list = [] # class attribute to store book
+
+
+    # class method entry_book
+    @classmethod
+    def entry_book(cls, book):
+        Library.book_list.append(book)
