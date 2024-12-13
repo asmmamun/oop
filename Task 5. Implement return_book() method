@@ -1,0 +1,41 @@
+class Library:
+    book_list = [] # class attribute to store book
+
+    # class method entry_book
+    @classmethod
+    def entry_book(cls, book):
+        Library.book_list.append(book)
+
+class Book:
+    def __init__(self, book_id, title, author, availability):
+        self.book_id = book_id
+        self.title = title
+        self.author = author
+        self.availability = availability
+
+    def borrow_book(self):
+        if self.availability:
+            self.availability = False
+            print(f"The book '{self.title}' (id: {self.book_id}) has just been borrowed successfully.")
+            print(f'-' * 50)
+        else:
+            print(f"The book '{self.title}' (id: {self.book_id}) is already borrowed before.")
+            print(f'-' * 50)
+    def return_book(self):
+        if not self.availability:
+            self.availability = True
+            print(f"The book '{self.title}' (id: {self.book_id}) has just been returned successfully.")
+            print(f'-' * 50)
+        else:
+            print(f"The book '{self.title}' (id: {self.book_id}) is already returned before.")
+            print(f'-' * 50)
+
+# Initialize Book object
+book1 = Book(1, 'Mother', 'Maxim Gorky', True)
+book2 = Book(2, 'War and Peace', 'Leo Tolstoy', False)
+book3 = Book(3, 'Hundred Years of Solitude', 'Marquez', True)
+
+# Entry the books in the library
+Library.entry_book(book1)
+Library.entry_book(book2)
+Library.entry_book(book3)
