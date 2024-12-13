@@ -1,0 +1,89 @@
+class Library:
+    book_list = [] # class attribute to store book
+
+    # class method entry_book
+    @classmethod
+    def entry_book(cls, book):
+        Library.book_list.append(book)
+
+class Book:
+    def __init__(self, book_id, title, author, availability):
+        self.book_id = book_id
+        self.title = title
+        self.author = author
+        self.availability = availability
+
+    def borrow_book(self):
+        if self.availability:
+            self.availability = False
+            print(f"The book '{self.title}' (id: {self.book_id}) has just been borrowed successfully.")
+            print(f'-' * 50)
+        else:
+            print(f"The book '{self.title}' (id: {self.book_id}) is already borrowed before.")
+            print(f'-' * 50)
+
+    def return_book(self):
+        if not self.availability:
+            self.availability = True
+            print(f"The book '{self.title}' (id: {self.book_id}) has just been returned successfully.")
+            print(f'-' * 50)
+        else:
+            print(f"The book '{self.title}' (id: {self.book_id}) is already returned before.")
+            print(f'-' * 50)
+   
+    def view_book_info(self):
+        print(f'Book ID: {self.book_id}')
+        print(f'Title: {self.title}')
+        print(f'Author: {self.author}')
+        print(f"Availability: {'Available' if self.availability else 'Not Available'}")
+        print('=' * 25)
+
+# Initialize Book object
+book1 = Book(1, 'Mother', 'Maxim Gorky', True)
+book2 = Book(2, 'War and Peace', 'Leo Tolstoy', False)
+book3 = Book(3, 'Hundred Years of Solitude', 'Marquez', True)
+
+# Entry the books in the library
+Library.entry_book(book1)
+Library.entry_book(book2)
+Library.entry_book(book3)
+
+# Menu System
+def menu():
+    while True:
+        print(f'\n---Library Menu---')
+        print(f'Press 1 to View All Books')
+        print(f'Press 2 to Borrow Book')
+        print(f'Press 3 to Return Book')
+        print(f'Press 4 to Exit\n')
+
+        choice = int(input('Enter your choice from the library menu: '))
+           
+        if choice == 1:
+            [book.view_book_info() for book in Library.book_list]
+
+        elif choice == 2:
+            # Borrow book
+            book_id = int(input('Enter the book id to borrow: '))
+            book = next((b for b in Library.book_list if b.book_id == book_id), None)
+            if book:
+                book.borrow_book()
+            else:
+                print(f'Invalid Book ID.')
+
+        elif choice == 3:
+            # Return Book
+            book_id  = int(input('Enter the book id to return: '))
+            book = next((b for b in Library.book_list if b.book_id == book_id), None)
+            if book:
+                book.return_book()
+            else:
+                print(f'Invalid Book ID')
+
+        elif choice == 4:
+            break
+        else:
+            print(f'Invalid choice, Please choose a number from the library menu.')
+
+# Run the menu
+menu()
